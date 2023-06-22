@@ -37,7 +37,7 @@ public class Client implements Runnable {
             }
             socket.close();
         } catch (IOException e) {
-            System.out.println(e);
+            e.printStackTrace();
         }
     }
 }
