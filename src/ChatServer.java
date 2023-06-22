@@ -12,7 +12,9 @@ public class ChatServer {
     }
 
     void sendAll(String message){
-
+        for (Client client: clients) {
+            client.receive(message);
+        }
     }
 
     public void run(){
@@ -22,7 +24,7 @@ public class ChatServer {
             try{
                 Socket socket = serverSocket.accept();
                 System.out.println("Client connected!");
-                clients.add(new Client(socket));
+                clients.add(new Client(socket, this));
             }catch (IOException e){
                 e.printStackTrace();
             }

@@ -7,14 +7,17 @@ import java.util.Scanner;
 
 public class Client implements Runnable {
     Socket socket;
-
-    public Client(Socket socket) {
+    Scanner in;
+    PrintStream out;
+    ChatServer server;
+    public Client(Socket socket, ChatServer server) {
+        this.server = server;
         this.socket = socket;
         new Thread(this).start();
     }
 
     void receive(String message){
-
+        out.println(message);
     }
 
     @Override
@@ -23,13 +26,13 @@ public class Client implements Runnable {
             InputStream is = socket.getInputStream();
             OutputStream os = socket.getOutputStream();
 
-            Scanner in = new Scanner(is);
-            PrintStream out = new PrintStream(os);
+            in = new Scanner(is);
+            out = new PrintStream(os);
 
-            out.println("Welcome to mountains!");
+            out.println("Welcome to chat!");
             String input = in.nextLine();
             while (!input.equals("bye")) {
-                out.println(input + "-" + input + "-" + input.substring(input.length() / 2) + "...");
+                server.sendAll(input);
                 input = in.nextLine();
             }
             socket.close();
